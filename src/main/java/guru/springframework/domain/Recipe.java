@@ -1,6 +1,8 @@
 package guru.springframework.domain;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,19 +18,30 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy ="recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
     @Lob
     private Byte[] image;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
 
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+    joinColumns = @JoinColumn(name = "recipe_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
+
     public Long getId() {
         return id;
     }
+
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     public String getDescription() {
         return description;
@@ -100,6 +113,13 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+        notes.setRecipe(this);
+    }
+
+    public Recipe addIngredient(Ingredient ingredient) {
+        ingredient.setRecipe(this);
+        ingredients.add(ingredient);
+        return this;
     }
 
     public void setId(Long id) {
@@ -112,5 +132,40 @@ public class Recipe {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", prepTime=" + prepTime +
+                ", cookTime=" + cookTime +
+                ", servings=" + servings +
+                ", source='" + source + '\'' +
+                ", url='" + url + '\'' +
+                ", directions='" + directions + '\'' +
+                ", ingredients=" + ingredients +
+                ", image=" + Arrays.toString(image) +
+                ", notes=" + notes +
+                ", categories=" + categories +
+                ", difficulty=" + difficulty +
+                '}';
     }
 }
