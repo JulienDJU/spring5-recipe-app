@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,13 @@ import java.util.Set;
 @Service
 public interface RecipeService {
 
-    public Set<Recipe> getRecipes();
+    Set<Recipe> getRecipes();
 
+    Recipe findById(Long id);
+
+    RecipeCommand saveRecipeCommand(RecipeCommand command);
+
+    RecipeCommand findCommandById(Long l);
+
+    void deleteById(Long idToDelete);
 }
