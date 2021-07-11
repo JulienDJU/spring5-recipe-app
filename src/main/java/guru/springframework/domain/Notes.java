@@ -1,11 +1,14 @@
 package guru.springframework.domain;
 
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@EqualsAndHashCode(exclude = {"recipe"})
-@Slf4j
+
+/**
+ * Created by jt on 6/13/17.
+ */
+@Getter
+@Setter
 public class Notes {
 
     private String id;
