@@ -1,11 +1,16 @@
 package guru.springframework.domain;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
+@Getter
+@Setter
+@Document
 public class UnitOfMeasure {
 
-    private Long id;
+    @Id
+    private String id;
     private String description;
     private String uom;
 
