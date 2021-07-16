@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 public class ImageServiceImplTest {
 
     @Mock
-    RecipeRepository recipeReactiveRepository;
+    RecipeRepository recipeRepository;
 
     ImageService imageService;
 
@@ -27,7 +27,7 @@ public class ImageServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        imageService = new ImageServiceImpl(recipeReactiveRepository);
+        imageService = new ImageServiceImpl(recipeRepository);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ImageServiceImplTest {
         recipe.setId(id);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeReactiveRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
@@ -49,7 +49,7 @@ public class ImageServiceImplTest {
         imageService.saveImageFile(id, multipartFile);
 
         //then
-        verify(recipeReactiveRepository, times(1)).save(argumentCaptor.capture());
+        verify(recipeRepository, times(1)).save(argumentCaptor.capture());
         Recipe savedRecipe = argumentCaptor.getValue();
         assertEquals(multipartFile.getBytes().length, savedRecipe.getImage().length);
     }

@@ -17,11 +17,11 @@ import java.io.IOException;
 public class ImageServiceImpl implements ImageService {
 
 
-    private final RecipeRepository recipeReactiveRepository;
+    private final RecipeRepository recipeRepository;
 
     public ImageServiceImpl( RecipeRepository recipeService) {
 
-        this.recipeReactiveRepository = recipeService;
+        this.recipeRepository = recipeService;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ImageServiceImpl implements ImageService {
     public void saveImageFile(String recipeId, MultipartFile file) {
 
         try {
-            Recipe recipe = recipeReactiveRepository.findById(recipeId).get();
+            Recipe recipe = recipeRepository.findById(recipeId).get();
 
             Byte[] byteObjects = new Byte[file.getBytes().length];
 
@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
 
             recipe.setImage(byteObjects);
 
-            recipeReactiveRepository.save(recipe);
+            recipeRepository.save(recipe);
         } catch (IOException e) {
             //todo handle better
             log.error("Error occurred", e);

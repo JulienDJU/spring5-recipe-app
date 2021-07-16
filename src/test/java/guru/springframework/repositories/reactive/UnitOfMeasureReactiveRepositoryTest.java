@@ -1,28 +1,33 @@
 package guru.springframework.repositories.reactive;
 
 import guru.springframework.domain.UnitOfMeasure;
-import junit.framework.TestCase;
-import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-@Slf4j
+import static org.junit.Assert.assertEquals;
+
 @RunWith(SpringRunner.class)
 @DataMongoTest
-public class UnitOfMeasureReactiveRepositoryTest extends TestCase {
+public class UnitOfMeasureReactiveRepositoryTest {
+
+    public static final String EACH = "Each";
 
     @Autowired
     UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 
+    @Before
+    public void setUp() throws Exception {
+        unitOfMeasureReactiveRepository.deleteAll().block();
+    }
+
     @Test
-    public void testUomSave() throws Exception {
+    public void testSaveUom() throws Exception {
         UnitOfMeasure uom = new UnitOfMeasure();
-        uom.setDescription("Teaspoon");
+        uom.setDescription(EACH);
 
         unitOfMeasureReactiveRepository.save(uom).block();
 
@@ -33,28 +38,15 @@ public class UnitOfMeasureReactiveRepositoryTest extends TestCase {
     }
 
     @Test
-    public void testAddDocumentObject() {
-        UnitOfMeasure uom = new UnitOfMeasure();
-        uom.setDescription("Teaspoon");
-
-        unitOfMeasureReactiveRepository.save(uom);
-
-        Flux<UnitOfMeasure> uomFlux = unitOfMeasureReactiveRepository.findAll();
-
-        uomFlux.subscribe(cUom -> log.info(cUom.getDescription()));
-    }
-
-    @Test
     public void testFindByDescription() throws Exception {
         UnitOfMeasure uom = new UnitOfMeasure();
-        uom.setDescription("Teaspoon");
+        uom.setDescription(EACH);
 
         unitOfMeasureReactiveRepository.save(uom).block();
 
-        UnitOfMeasure fetchedUom = unitOfMeasureReactiveRepository.findByDescription("Teaspoon").block();
+        UnitOfMeasure fetchedUOM = unitOfMeasureReactiveRepository.findByDescription(EACH).block();
 
-        assertNotNull(fetchedUom.getDescription());
-        assertNotNull(fetchedUom.getId());
+        assertEquals(EACH, fetchedUOM.getDescription());
+
     }
-
 }

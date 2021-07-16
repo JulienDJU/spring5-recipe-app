@@ -28,7 +28,7 @@ public class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
 
     @Mock
-    RecipeRepository recipeReactiveRepository;
+    RecipeRepository recipeRepository;
 
     @Mock
     RecipeToRecipeCommand recipeToRecipeCommand;
@@ -40,7 +40,7 @@ public class RecipeServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeReactiveRepository, recipeCommandToRecipe, recipeToRecipeCommand);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -49,13 +49,13 @@ public class RecipeServiceImplTest {
         recipe.setId("1");
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeReactiveRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         Recipe recipeReturned = recipeService.findById("1");
 
         assertNotNull("Null recipe returned", recipeReturned);
-        verify(recipeReactiveRepository, times(1)).findById(anyString());
-        verify(recipeReactiveRepository, never()).findAll();
+        verify(recipeRepository, times(1)).findById(anyString());
+        verify(recipeRepository, never()).findAll();
     }
 
     @Test(expected = NotFoundException.class)
@@ -63,7 +63,7 @@ public class RecipeServiceImplTest {
 
         Optional<Recipe> recipeOptional = Optional.empty();
 
-        when(recipeReactiveRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         Recipe recipeReturned = recipeService.findById("1");
 
@@ -76,7 +76,7 @@ public class RecipeServiceImplTest {
         recipe.setId("1");
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeReactiveRepository.findById(anyString())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId("1");
@@ -86,8 +86,8 @@ public class RecipeServiceImplTest {
         RecipeCommand commandById = recipeService.findCommandById("1");
 
         assertNotNull("Null recipe returned", commandById);
-        verify(recipeReactiveRepository, times(1)).findById(anyString());
-        verify(recipeReactiveRepository, never()).findAll();
+        verify(recipeRepository, times(1)).findById(anyString());
+        verify(recipeRepository, never()).findAll();
     }
 
     @Test
@@ -102,8 +102,8 @@ public class RecipeServiceImplTest {
         Set<Recipe> recipes = recipeService.getRecipes();
 
         assertEquals(recipes.size(), 1);
-        verify(recipeReactiveRepository, times(1)).findAll();
-        verify(recipeReactiveRepository, never()).findById(anyString());
+        verify(recipeRepository, times(1)).findAll();
+        verify(recipeRepository, never()).findById(anyString());
     }
 
     @Test
@@ -118,6 +118,6 @@ public class RecipeServiceImplTest {
         //no 'when', since method has void return type
 
         //then
-        verify(recipeReactiveRepository, times(1)).deleteById(anyString());
+        verify(recipeRepository, times(1)).deleteById(anyString());
     }
 }
