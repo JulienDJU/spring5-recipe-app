@@ -30,7 +30,7 @@ public class RecipeServiceIT {
     RecipeService recipeService;
 
     @Autowired
-    RecipeRepository recipeRepository;
+    RecipeRepository recipeReactiveRepository;
 
     @Autowired
     RecipeCommandToRecipe recipeCommandToRecipe;
@@ -42,7 +42,7 @@ public class RecipeServiceIT {
     @Test
     public void testSaveOfDescription() throws Exception {
         //given
-        Iterable<Recipe> recipes = recipeRepository.findAll();
+        Iterable<Recipe> recipes = recipeReactiveRepository.findAll();
         Recipe testRecipe = recipes.iterator().next();
         RecipeCommand testRecipeCommand = recipeToRecipeCommand.convert(testRecipe);
 

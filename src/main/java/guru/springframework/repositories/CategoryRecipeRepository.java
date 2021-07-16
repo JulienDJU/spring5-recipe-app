@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Created by jt on 6/13/17.
  */
-public interface CategoryRepository extends CrudRepository<Category, String> {
+public interface CategoryRecipeRepository extends CrudRepository<Category, String> {
 
     Optional<Category> findByDescription(String description);
 }

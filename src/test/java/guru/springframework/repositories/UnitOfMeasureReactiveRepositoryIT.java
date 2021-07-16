@@ -19,25 +19,25 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
-public class UnitOfMeasureRepositoryIT {
+public class UnitOfMeasureReactiveRepositoryIT {
 
     @Autowired
-    UnitOfMeasureRepository unitOfMeasureRepository;
+    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 
     @Autowired
-    CategoryRepository categoryRepository;
+    CategoryRecipeRepository categoryRecipeRepository;
 
     @Autowired
-    RecipeRepository recipeRepository;
+    RecipeRepository recipeReactiveRepository;
 
     @Before
     public void setUp() throws Exception {
 
-        recipeRepository.deleteAll();
-        unitOfMeasureRepository.deleteAll();
-        categoryRepository.deleteAll();
+        recipeReactiveRepository.deleteAll();
+        unitOfMeasureReactiveRepository.deleteAll();
+        categoryRecipeRepository.deleteAll();
 
-        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(categoryRepository, recipeRepository, unitOfMeasureRepository);
+        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(categoryRecipeRepository, recipeReactiveRepository, unitOfMeasureReactiveRepository);
 
         recipeBootstrap.onApplicationEvent(null);
     }
@@ -45,7 +45,7 @@ public class UnitOfMeasureRepositoryIT {
     @Test
     public void findByDescription() throws Exception {
 
-        Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
+        Optional<UnitOfMeasure> uomOptional = unitOfMeasureReactiveRepository.findByDescription("Teaspoon");
 
         assertEquals("Teaspoon", uomOptional.get().getDescription());
     }
@@ -53,7 +53,7 @@ public class UnitOfMeasureRepositoryIT {
     @Test
     public void findByDescriptionCup() throws Exception {
 
-        Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
+        Optional<UnitOfMeasure> uomOptional = unitOfMeasureReactiveRepository.findByDescription("Cup");
 
         assertEquals("Cup", uomOptional.get().getDescription());
     }
